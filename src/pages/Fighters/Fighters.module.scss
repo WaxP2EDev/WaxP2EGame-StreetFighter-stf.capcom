@@ -4,39 +4,68 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 70%;
     margin: auto;
 }
 
-.mainbg {
-    margin-top: 5%;
-    text-align: center;
-}
-.mainbg img {
-    width: 80%;
-}
-
-
-.effects{
-    text-align: center;
+.NavBar{
+    background-color: #1A1440;
+    color: #f93b5d;
     display: flex;
-    width: 100%;
-    margin: auto;
-}
-.btn_confirm{
-    display: flex;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 1rem 2rem ;
+    justify-content: space-between;
     align-items: center;
-    margin-right:10px;
-    margin-left:10px;
-    button{
-        background: url('../../image/fight.png') no-repeat;
-        background-size: 100%, 100%;
-        width: 120px;
-        height: 56px;
-        border-radius: 30px !important;
+    position: sticky;
+    position: -webkit-sticky;
+    width: 100%;
+    top: 64px;
+    height: 100%;
+}
+@media only screen and (max-width: 600px) {
+    .NavBar {
+      top: 56px;
+    }
+  }
+
+.NavTitle{font-size: 2rem;}
+.css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
+    background-color: #1a203c!important;
+}
+.css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper ul{
+    background-color: #1a203c;
+}
+.NavItems{
+    list-style-type: none;
+    display: flex;
+    place-content: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+    
+    li{
+        background-color: #ea923e;
+        border-radius: 7px;
+        color: white;
+        width: 140px;
+        margin: 10px;
+        a{
+            button{
+                padding-left: 12px;
+                padding-right: 12px;
+                color: white;
+                width: 100%;
+                height: 100%;
+            }
+        }
     }
     
 }
+
+
+a{text-decoration: none;}
+a:visited{color: currentColor}
 
 .section{
     padding: 1rem 4rem;
@@ -147,18 +176,5 @@ a.footerAnchor:active{
         border-radius: 54px;
         border: 8px solid white;
         margin-top: 30px;
-    }
-}
-
-@media only screen and (max-width: 1000px) {
-    .effects{
-        text-align: center;
-        display: block;
-    }
-    .btn_confirm{
-        text-align:center;
-        display: block;
-        margin-top:10px;
-        margin-bottom:10px;
     }
 }

@@ -28,9 +28,11 @@ export interface URIProp {
 const NFTCard = ({ uri, name, account, assetID, backed_tokens }: URIProp) => {
   console.log("back", backed_tokens);
   const [backAmount, setBackamount] = useState("");
+  const [hide, setHide] = useState(false);
   let result: any;
   const btnStyle = {
     width: "100%",
+    minWidth:"2px",
     color: "white",
     height: "100%",
     fontWeight: "bold",
@@ -64,6 +66,11 @@ const NFTCard = ({ uri, name, account, assetID, backed_tokens }: URIProp) => {
     backgroundImage: "radial-gradient(circle, #5c0067 0%, #06313a 100%)",
   }
 
+  const display_none = {
+    display: "none",
+  }
+
+
   //------------ for model start------------
 
   const modal_style = {
@@ -72,9 +79,11 @@ const NFTCard = ({ uri, name, account, assetID, backed_tokens }: URIProp) => {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    bgcolor: '#1a203c',
+    color: 'white',
+    border: '4px solid #000',
     boxShadow: 24,
+    borderColor: '#ea923e',
     textAlign: "center",
     borderRadius: "16px",
     p: 4,
@@ -82,24 +91,29 @@ const NFTCard = ({ uri, name, account, assetID, backed_tokens }: URIProp) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
 
   //------------ for model end------------
 
   const endpoint = "https://wax.greymass.com";
   let backed_token: any = backed_tokens;
-  let amount;
-  let amountFlag = false;
+
+  let tmp = 0;
   if (backed_token.length != 0) {
-    amount = parseInt(backed_tokens[0].amount) / 100000000;
-    amountFlag = true;
-
-
+    tmp = parseInt(backed_tokens[0].amount) / 100000000;
+    tmp = Math.floor(tmp*100)/100;
   }
+  const [amount, setAmount] = useState(tmp);
+
+  let amountFlag = false;
+
+  
   const wax = new waxjs.WaxJS({
     rpcEndpoint: endpoint
   });
 
   const burn = async () => {
+    
     await wax.login();
 
     if (wax == undefined && wax == null) {
@@ -125,11 +139,17 @@ const NFTCard = ({ uri, name, account, assetID, backed_tokens }: URIProp) => {
         expireSeconds: 30
       });
     }
-
+    if(result != undefined && result != null) {
+      setHide(true);
+    }
 
   }
   const backToken = async () => {
-    let amountResult = parseFloat(backAmount) + "";
+    if(backAmount.length == 0) {
+      alert("please set stake amount");
+      return ;
+    }
+    let amountResult = backAmount + "";
     console.log("amountResult", amountResult.length);
 
     if (amountResult.length < 15) {
@@ -202,13 +222,27 @@ const NFTCard = ({ uri, name, account, assetID, backed_tokens }: URIProp) => {
       expireSeconds: 30
     });
     console.log("result", result);
-
+    if(result != undefined && result != null) {
+      let _amount = 1.0*amount + (1.0 * parseInt(backAmount));
+      _amount = Math.floor(_amount*100)/100;
+      setAmount(_amount);
+      handleClose();
+    }
   }
 
   const getInputValue = (event: any) => {
-    setBackamount(event.target.value);
+    let _value = event.target.value;
+
+    console.log("value = ", _value, Math.floor(_value));
+
+    if(event.target.value > 0 && Math.floor(_value) == _value || event.target.value.length == 0) {
+      console.log("okay");
+      setBackamount(event.target.value);
+    }
+    
   };
   return (
+    <Grid xl={2.4} md={4} sm={6} xs={12} style={{marginBottom:"50px"}} sx = {[hide?display_none:{}]}>
     <Box sx={box_style}>
 
       <div>
@@ -224,9 +258,11 @@ const NFTCard = ({ uri, name, account, assetID, backed_tokens }: URIProp) => {
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 5 }}>
               <TextField
+              style={{color:"white"}}
                 id="outlined-number"
                 label="Number"
                 type="number"
+                value={backAmount}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -251,10 +287,6 @@ const NFTCard = ({ uri, name, account, assetID, backed_tokens }: URIProp) => {
           <Typography className="name" variant="h6" style={{ fontSize: "13px", width: "90%", margin: "auto" }} component="div" sx={{ flexGrow: 1 }}>
             {name}
           </Typography>
-        </Box>
-        <Box sx={{ mb: 1, width: "90%", margin: "auto" }}>
-          <span style={{ color: "#42ba67", fontWeight: "bold" }}>0.75WAX</span>
-          <span style={{ fontWeight: "bold" }}>($2)</span>
         </Box>
         <Grid container style={{ justifyContent: "space-between", width: "90%", margin: "auto", marginTop: "5px" }}>
           <Grid item xs={5}>
@@ -314,6 +346,7 @@ const NFTCard = ({ uri, name, account, assetID, backed_tokens }: URIProp) => {
         </Grid>
       </Box>
     </Box>
+    </Grid>
   );
 };
 

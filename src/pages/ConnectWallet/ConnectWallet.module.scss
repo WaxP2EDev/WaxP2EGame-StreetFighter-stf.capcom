@@ -13,15 +13,16 @@
     text-align: center;
 }
 .mainbg img {
-    width: 80%;
+    width: 60%;
 }
 
 
 .effects{
     text-align: center;
     display: flex;
-    width: 100%;
+    width: 70%;
     margin: auto;
+    margin-top: 10%;
 }
 .btn_confirm{
     display: flex;
@@ -33,7 +34,7 @@
         background-size: 100%, 100%;
         width: 120px;
         height: 56px;
-        border-radius: 30px !important;
+        border-radius: 30px;
     }
     
 }
